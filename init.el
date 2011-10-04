@@ -130,7 +130,7 @@
 
 (add-hook 'compilation-mode-hook 'visual-line-mode)
 
-(add-hook 'makefile-gmake-mode-hook 'linum-mode)
+(add-hook 'makefile-gmake-mode-hook 'linum-modees)
 
 (global-set-key [?\s-l] 'add-change-log-entry-other-window)
 (global-set-key [?\s-g] 'goto-line)
