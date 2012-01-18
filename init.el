@@ -34,7 +34,7 @@
 (color-theme-initialize)
 
 ;;Themes I like
-;; (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
+ (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-calm-forest);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;;(color-theme-hober) 
 ;; (color-theme-oswald);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
@@ -42,8 +42,8 @@
 ;; (color-theme-renegade) ;; Keywords don't stand out
 ;; (color-theme-taylor)
 ;; (color-theme-wheat)
- (color-theme-tty-dark) 
-;; (color-theme-taming-mr-arneson) 
+;; (color-theme-tty-dark) 
+;; (color-theme-taming-mr-arneson)
 ;; (color-theme-lethe)
 ;; (color-theme-arjen)
 ;; (color-theme-billw);; Comments don't stand out
@@ -62,6 +62,7 @@
 
 ;;Sets order of default backends
 (setq vc-handled-backends '(Bzr Git Hg RCS CVS SVN Mtn Arch SCCS))
+
 
 ;Sets the path emacs uses to search for things
 (setq exec-path (append exec-path '("/home/becker/weflen/progs" "/home/becker/weflen/progs/bin")))
@@ -95,42 +96,40 @@
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
+(defun ol-add-to-hooks (prog-mode-hook)
+  "add a series of functions to prog-mode-hook"
+  (progn (add-hook prog-mode-hook 'linum-mode)
+	 (add-hook prog-mode-hook 'show-paren-mode) ) )
+
+(defun cl-add-to-hooks (prog-mode-hook)
+  "add a series of functions to prog-mode-hook"
+  (add-hook prog-mode-hook 'linum-mode)
+  (add-hook prog-mode-hook 'show-paren-mode)
+  (add-hook prog-mode-hook (lambda () (global-set-key [?\s-c] 'compile)) ) )
+
+(defun il-add-to-hooks (prog-mode-hook)
+  "add a series of functions to prog-mode-hook"
+  (progn (add-hook prog-mode-hook 'linum-mode)
+	 (add-hook prog-mode-hook 'show-paren-mode)
+	 (add-hook prog-mode-hook  
+		   (lambda () (global-set-key [?\s-r] 'executable-interpret)) ) ) )
+
+
 (make-variable-buffer-local 'show-paren-mode)
 
-(add-hook 'emacs-lisp-mode-hook 'linum-mode)
-(add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
+(let ( 
+      (c-lang-hooks '(c-mode-hook c++-mode-hook f90-mode-hook) )
+      (i-lang-hooks '(python-mode-hook shell-script-mode-hook ) )
+      (o-lang-hooks '(latex-mode-hook makefile-gmake-mode-hook emacs-lisp-mode-hook awk-mode-hook octave-mode-hook) )
+      )
+  (mapc 'il-add-to-hooks i-lang-hooks)
+  (mapc 'cl-add-to-hooks c-lang-hooks)
+  (mapc 'ol-add-to-hooks o-lang-hooks)
+  )
 
-(add-hook 'c++-mode-hook 'linum-mode)
-(add-hook 'c++-mode-hook (lambda () (global-set-key [?\s-c] 'compile)) )
-(add-hook 'c++-mode-hook 'show-paren-mode)
-
-(add-hook 'f90-mode-hook 'linum-mode)
-(add-hook 'f90-mode-hook (lambda () (global-set-key [?\s-c] 'compile)) )
-(add-hook 'f90-mode-hook 'show-paren-mode)
-
-(add-hook 'python-mode-hook 'linum-mode)
-(add-hook 'python-mode-hook
-	  (lambda () (global-set-key [?\s-r] 'executable-interpret)) )
-(add-hook 'python-mode-hook 'show-paren-mode)
-
-(add-hook 'awk-mode-hook 'linum-mode)
-(add-hook 'awk-mode-hook
-	  (lambda () (global-set-key [?\s-r] 'executable-interpret)) )
-(add-hook 'awk-mode-hook 'show-paren-mode)
-
-
-(add-hook 'c-mode-hook 'c++-mode)
-
-(add-hook 'latex-mode-hook 'linum-mode)
-(add-hook 'latex-mode-hook 'show-paren-mode)
-
-(add-hook 'shell-script-mode-hook 'linum-mode)
-(add-hook 'shell-script-mode-hook 
-	  (lambda () (global-set-key [?\s-r] 'executable-interpret)) )
+(add-hook 'emacs-lisp-mode-hook (lambda () (global-set-key [?\s-b] 'byte-compile-file)) )
 
 (add-hook 'compilation-mode-hook 'visual-line-mode)
-
-(add-hook 'makefile-gmake-mode-hook 'linum-modees)
 
 (global-set-key [?\s-l] 'add-change-log-entry-other-window)
 (global-set-key [?\s-g] 'goto-line)
