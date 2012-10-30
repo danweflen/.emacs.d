@@ -54,11 +54,11 @@
 ;;(require 'egg)
 
 ;;Loads git-mode (the official one)
-(require 'git)
-(require 'git-blame)
+;(require 'git)
+;(require 'git-blame)
 
 ;; Loads magit (another git mode)
-;;(require 'magit)
+(require 'magit)
 
 ;;Sets order of default backends
 (setq vc-handled-backends '(Bzr Git Hg RCS CVS SVN Mtn Arch SCCS))
