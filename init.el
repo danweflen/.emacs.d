@@ -36,13 +36,13 @@
 ;;Themes I like
  (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-calm-forest);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
-;;(color-theme-hober) 
+;;(color-theme-hober)
 ;; (color-theme-oswald);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-midnight) ;; Comments don't stand out
 ;; (color-theme-renegade) ;; Keywords don't stand out
 ;; (color-theme-taylor)
 ;; (color-theme-wheat)
-;; (color-theme-tty-dark) 
+;; (color-theme-tty-dark)
 ;; (color-theme-taming-mr-arneson)
 ;; (color-theme-lethe)
 ;; (color-theme-arjen)
@@ -51,14 +51,14 @@
 
 ;;Loads egg (emacs git mode)
 
-(require 'egg)
+;;(require 'egg)
 
 ;;Loads git-mode (the official one)
-;; (require 'git)
-;; (require 'git-blame)
+;(require 'git)
+;(require 'git-blame)
 
 ;; Loads magit (another git mode)
-;;(require 'magit)
+(require 'magit)
 
 ;;Sets order of default backends
 (setq vc-handled-backends '(Bzr Git Hg RCS CVS SVN Mtn Arch SCCS))
@@ -96,6 +96,9 @@
 (setq x-select-enable-clipboard t)
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
+;;Make ".m" files open in octave mode instead of Obj-C mode.
+(setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
+
 (defun ol-add-to-hooks (prog-mode-hook)
   "add a series of functions to prog-mode-hook"
   (progn (add-hook prog-mode-hook 'linum-mode)
@@ -112,7 +115,7 @@
   (progn (add-hook prog-mode-hook 'linum-mode)
 	 (add-hook prog-mode-hook 'show-paren-mode)
 	 (add-hook prog-mode-hook  
-		   (lambda () (global-set-key [?\s-r] 'executable-interpret)) ) ) )
+		   (lambda () (global-set-key [?\s-r] 'executable-interpret)) ) ) ) 
 
 
 (make-variable-buffer-local 'show-paren-mode)
@@ -127,7 +130,7 @@
   (mapc 'ol-add-to-hooks o-lang-hooks)
   )
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (global-set-key [?\s-b] 'byte-compile-file)) )
+(add-hook 'emacs-lisp-mode-hook (lambda () (global-set-key [?\s-c] 'byte-compile-file)) )
 
 (add-hook 'compilation-mode-hook 'visual-line-mode)
 
@@ -138,3 +141,10 @@
 (global-set-key [?\s-s] 'copy-to-register)
 (global-set-key [?\s-i] 'insert-register)
 (global-set-key [?\s-h] 'shell)
+
+(setq tab-width 8)
+(setq c-basic-offset 8)
+(setq c-default-style "linux" c-basic-offset 4)
+(setq c-default-style '((java-mode . "java")
+			(awk-mode . "awk")
+			(other . "linux")))
