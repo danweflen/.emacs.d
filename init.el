@@ -34,7 +34,7 @@
 (color-theme-initialize)
 
 ;;Themes I like
- (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
+;; (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-calm-forest);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;;(color-theme-hober)
 ;; (color-theme-oswald);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
@@ -48,6 +48,10 @@
 ;; (color-theme-arjen)
 ;; (color-theme-billw);; Comments don't stand out
 ;; (color-theme-comidia)
+
+(if window-system ;; sets color theme to lethe in a terminal, euphoria otherwise 
+    (color-theme-euphoria) 
+  (color-theme-lethe)) 
 
 ;;Loads egg (emacs git mode)
 
@@ -84,8 +88,19 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  )
+
+;;ediff prefrences
+(setq-default ediff-ignore-similar-regions t)
+(setq-default ediff-highlight-all-diffs nil)
+
+;;automatically reread files from disk if modified
+;;(this is useful for having separate git branches)
+(global-auto-revert-mode t)
+
 (autoload 'linum-mode "linum" "toggle line numbers on/off" t) 
 (global-set-key (kbd "C-<f5>") 'linum-mode)    
+
+(require 'gnuplot-mode)
 
 (setq scroll-conservatively 10)
 
@@ -98,18 +113,22 @@
 
 ;;Make ".m" files open in octave mode instead of Obj-C mode.
 (setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.pl$" . gnuplot-mode) auto-mode-alist))
 
+; Other languages
 (defun ol-add-to-hooks (prog-mode-hook)
   "add a series of functions to prog-mode-hook"
   (progn (add-hook prog-mode-hook 'linum-mode)
 	 (add-hook prog-mode-hook 'show-paren-mode) ) )
 
+; Compiled Languages
 (defun cl-add-to-hooks (prog-mode-hook)
   "add a series of functions to prog-mode-hook"
   (add-hook prog-mode-hook 'linum-mode)
   (add-hook prog-mode-hook 'show-paren-mode)
   (add-hook prog-mode-hook (lambda () (global-set-key [?\s-c] 'compile)) ) )
 
+; Interpreted Languages
 (defun il-add-to-hooks (prog-mode-hook)
   "add a series of functions to prog-mode-hook"
   (progn (add-hook prog-mode-hook 'linum-mode)
@@ -130,7 +149,7 @@
   (mapc 'ol-add-to-hooks o-lang-hooks)
   )
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (global-set-key [?\s-c] 'byte-compile-file)) )
+(add-hook 'emacs-lisp-mode-hook (lambda () (global-set-key [?\s-b] 'byte-compile-file)) )
 
 (add-hook 'compilation-mode-hook 'visual-line-mode)
 
