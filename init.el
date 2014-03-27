@@ -34,20 +34,24 @@
 (color-theme-initialize)
 
 ;;Themes I like
-;; (color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
-;; (color-theme-calm-forest);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
-;;(color-theme-hober)
+;;(color-theme-euphoria);;  Makes it difficult to use shell-mode, as "executable" green is the same as standard text
+;;(color-theme-calm-forest);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
+;;(color-theme-hober) ;; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-oswald);; Makes it difficult to use shell-mode, as "executable" green is the same as standard text
 ;; (color-theme-midnight) ;; Comments don't stand out
 ;; (color-theme-renegade) ;; Keywords don't stand out
 ;; (color-theme-taylor)
 ;; (color-theme-wheat)
-;; (color-theme-tty-dark)
+;; (color-theme-tty-dark) ;; Hard to read 
 ;; (color-theme-taming-mr-arneson)
 ;; (color-theme-lethe)
 ;; (color-theme-arjen)
 ;; (color-theme-billw);; Comments don't stand out
-;; (color-theme-comidia)
+;;(color-theme-comidia)
+
+(if window-system
+    (color-theme-euphoria)
+  (color-theme-lethe))
 
 (if window-system ;; sets color theme to lethe in a terminal, euphoria otherwise 
     (color-theme-euphoria) 
@@ -63,6 +67,7 @@
 
 ;; Loads magit (another git mode)
 (require 'magit)
+(require 'cuda-mode)
 
 ;;Sets order of default backends
 (setq vc-handled-backends '(Bzr Git Hg RCS CVS SVN Mtn Arch SCCS))
@@ -114,6 +119,7 @@
 ;;Make ".m" files open in octave mode instead of Obj-C mode.
 (setq auto-mode-alist (cons '("\\.m$" . octave-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.pl$" . gnuplot-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.cu$") )
 
 ; Other languages
 (defun ol-add-to-hooks (prog-mode-hook)
@@ -136,11 +142,10 @@
 	 (add-hook prog-mode-hook  
 		   (lambda () (global-set-key [?\s-r] 'executable-interpret)) ) ) ) 
 
-
 (make-variable-buffer-local 'show-paren-mode)
 
 (let ( 
-      (c-lang-hooks '(c-mode-hook c++-mode-hook f90-mode-hook) )
+      (c-lang-hooks '(c-mode-hook c++-mode-hook f90-mode-hook cuda-mode-hook) )
       (i-lang-hooks '(python-mode-hook shell-script-mode-hook ) )
       (o-lang-hooks '(latex-mode-hook makefile-gmake-mode-hook emacs-lisp-mode-hook awk-mode-hook octave-mode-hook) )
       )
