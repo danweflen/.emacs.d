@@ -1,0 +1,16 @@
+.sx
+abbrev_defs
+auto-save-list
+lisp
+raw_code
+session*
+share
+tramp
+var
+xkcd
+color-theme*
+elpa
+eshell
+games
+*.elc
+*~
